@@ -77,7 +77,7 @@ float engineNM = 0.0f;
 bool newData;
 
 byte page = 0;
-byte NUM_PAGES = 2;
+byte NUM_PAGES = 3;
 int voipButtonVal = 0;
 int telephoneButtonVal = 0;
 
@@ -129,9 +129,9 @@ void loop() {
       engineNM = ( (rxBuf[1] * 256) + rxBuf[0] ) / 32;
       float hp = (rpm * engineNM) / 9550;
       if (hp > 0) {
-        Serial.println(hp);
+        // Serial.println(hp);
       }
-      
+
     } else {
       // printIdAndBuf(rxID, rxBuf);
     }
@@ -145,6 +145,10 @@ void loop() {
     hasDrawnCarPicture = false;
     if (newData) {
       displayCoolantRPMOil(coolantTemp, rpm, oilTemp);
+    }
+  } else if (page == 2) {
+    if (newData) {
+      displayBigRPM(rpm);
     }
   }
 
@@ -211,6 +215,16 @@ void displayCoolantRPMOil(int coolantTemp, int rpm, int oilTemp) {
   display.setCursor(92, 18);
   display.print(oilTemp);
 
+  display.display();
+}
+
+void displayBigRPM(int rpm) {
+  display.clearDisplay();
+  display.setTextSize(4);
+  display.setTextColor(SSD1306_WHITE);
+
+  display.setCursor(17,2);
+  display.print(rpm);
   display.display();
 }
 
